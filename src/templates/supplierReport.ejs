@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { theme: { extend: { colors: { clifford: '#da373d' } } } };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  </head>
+  <body class="mt-0 pt-0 h-full">
+    <div class="bg-yellow-500 px-3 py-5 rounded-lg flex flex-col justify-end">
+      <div class="flex w-full">
+        <div class="w-1/2 flex justify-start">
+          <p class="text-2xl font-semibold"><%= orders.dataValues.company_name %></p>
+        </div>
+        <div class="w-1/2 items-right flex justify-end">
+          <div class="flex flex-col">
+            <p class="text-2xl font-semibold">Monthly Report</p>
+            <p class="font-semibold">التقرير الشهري</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-2 w-full border-collapse border border-slate-100 p-2">
+      <div class="flex items-center">
+        <div class="flex w-full">
+          <div class="flex flex-col">
+            <p class="font-mono">Report No :</p>
+            <p class="font-normal">تاريخ إصدار التقرير</p>
+          </div>
+          <p class="ml-2 font-thin"># <%= report.dataValues.uuid.slice(0, 8) %></p>
+        </div>
+      </div>
+      <hr class="border-black/10 my-2" />
+      <div class="flex items-center">
+        <div class="flex w-full">
+          <div class="flex flex-col">
+            <p class="font-mono">Report Issue date :</p>
+            <p class="font-normal">تاريخ إصدار التقرير</p>
+          </div>
+          <p class="ml-2 font-thin"><%= report.dataValues.created_at.toISOString().split("T")[0] %></p>
+        </div>
+      </div>
+      <hr class="border-black/10 my-2" />
+      <div class="flex items-center">
+        <div class="flex w-full">
+          <div class="flex flex-col">
+            <p class="font-mono">Customer Name :</p>
+            <p class="font-normal">اسم الزبون</p>
+          </div>
+          <p class="ml-2 font-semibold font-mono break-words"><%= orders.dataValues.company_name %></p>
+        </div>
+      </div>
+      <hr class="border-black/10 my-2" />
+      <div class="flex items-center">
+        <div class="flex w-full">
+          <div class="flex flex-col">
+            <p class="font-mono">Customer VAT no :</p>
+            <p class="font-normal break-words">رقم ضريبة القيمة المضافة</p>
+          </div>
+          <p class="ml-2 font-mono break-words"><%= orders.dataValues.tax_number %></p>
+        </div>
+      </div>
+      <hr class="border-black/10 my-2" />
+      <div class="flex items-center">
+        <div class="flex w-full">
+          <div class="flex flex-col">
+            <p class="font-mono">Address :</p>
+            <p class="font-normal break-words">عنوان</p>
+          </div>
+          <p class="ml-2 font-mono break-words">
+            <%= orders.dataValues.address %>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-12 mb-3 px-2">
+      <div class="flex justify-between">
+        <p class="text-2xl font-medium font-mono">Sales Summary</p>
+        <p class="text-2xl font-medium">ملخص المبيعات</p>
+      </div>
+    </div>
+    <div class="my-3 page-break-before">
+      <table class="bg-white rounded-xl font-mono border-2">
+        <tr>
+          <th class="border bg-stone-200 px-8 py-4 text-left">
+            <div class="flex flex-col">
+              <p>Discription</p>
+              <p>وصف</p>
+            </div>
+          </th>
+          <th class="border bg-stone-200 px-8 py-4 text-left">
+            <div class="flex flex-col">
+              <p>No.of Orders</p>
+              <p>عدد الطلبات</p>
+            </div>
+          </th>
+          <th class="border bg-stone-200 px-8 py-4 text-left">
+            <div class="flex flex-col">
+              <p>Amount</p>
+              <p>كمية</p>
+            </div>
+          </th>
+          <th class="border bg-stone-200 px-8 py-4 text-left">
+            <div class="flex flex-col">
+              <p>Total VAT Amount</p>
+              <p>المضافة</p>
+            </div>
+          </th>
+          <th class="border bg-stone-200 px-8 py-4 text-left">
+            <div class="flex flex-col">
+              <p>Total with VAT</p>
+              <p>الإجمالية</p>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <td class="border-2 px-8 py-4">
+            <div class="flex flex-col">
+              <p>Successful Orders</p>
+              <p>البيع نقدا</p>
+            </div>
+          </td>
+          <td class="border-2 px-8 py-4"><%= total_success_orders_count %></td>
+          <td class="border-2 px-8 py-4"><%= total_amount_without_vat.toFixed(2) %></td>
+          <td class="border-2 px-8 py-4">
+            <%= total_success_orders_amount.toFixed(2)-total_amount_without_vat.toFixed(2) %>
+          </td>
+          <td class="border-2 px-8 py-4"><%= total_success_orders_amount.toFixed(2) %></td>
+        </tr>
+        <tr>
+          <td class="border-2 px-8 py-4">
+            <div class="flex flex-col">
+              <p>Canceled Orders</p>
+              <p>مبيعات الائتمان</p>
+            </div>
+          </td>
+          <td class="border-2 px-8 py-4"><%= canceled_orders_count %></td>
+          <td class="border-2 px-8 py-4"><%=total_canceled_orders_amount.toFixed(2) %></td>
+          <td class="border-2 px-8 py-4">0</td>
+          <td class="border-2 px-8 py-4"><%=total_canceled_orders_amount.toFixed(2) %></td>
+        </tr>
+
+        <tr>
+          <td class="border-2 px-8 py-4">
+            <div class="flex flex-col">
+              <p>Total sales</p>
+              <p>المبيعات المرفوضة</p>
+            </div>
+          </td>
+          <td class="border-2 px-8 py-4"></td>
+          <td class="border-2 px-8 py-4"></td>
+          <td class="border-2 px-8 py-4">
+            <%= total_success_orders_amount.toFixed(2)-total_amount_without_vat.toFixed(2) %>
+          </td>
+          <td class="border-2 px-8 py-4">
+            <%=(total_success_orders_amount - total_canceled_orders_amount).toFixed(2) %>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="my-3 mt-24 px-2 page-break-before">
+      <div class="flex justify-between">
+        <p class="text-2xl font-medium font-mono">Simple Invoice</p>
+        <p class="text-2xl font-medium">فاتورة بسيطة</p>
+      </div>
+    </div>
+    <div class="my-3">
+      <table class="bg-white rounded-xl font-mono border-2">
+        <tr>
+          <th class="border bg-stone-200 px-8 py-4 text-left">
+            <div class="flex flex-col">
+              <p>Discription</p>
+              <p>وصف</p>
+            </div>
+          </th>
+          <th class="border bg-stone-200 px-8 py-4 text-left">
+            <div class="flex flex-col">
+              <p>Percentage</p>
+              <p>نسبة مئوية</p>
+            </div>
+          </th>
+          <th class="border bg-stone-200 px-8 py-4 text-left">
+            <div class="flex flex-col">
+              <p>Amount</p>
+              <p>كمية</p>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <td class="border-2 px-8 py-4">
+            <div class="flex flex-col">
+              <p>Sales Commission</p>
+              <p>عمولة المبيعات</p>
+            </div>
+          </td>
+          <td class="border-2 px-8 py-4"><%= sales_commission_percent.toFixed(2) %> %</td>
+          <td class="border-2 px-8 py-4"><%= sales_commission_amount %> SAR</td>
+        </tr>
+        <tr>
+          <td class="border-2 px-8 py-4">
+            <div class="flex flex-col">
+              <p>Bank Commission</p>
+              <p>عمولة البنك</p>
+            </div>
+          </td>
+          <td class="border-2 px-8 py-4"><%= bank_commission_percent.toFixed(2) %> %</td>
+          <td class="border-2 px-8 py-4"><%= bank_commission_amount %> SAR</td>
+        </tr>
+        <tr>
+          <td class="border-2 px-8 py-4" colspan="2">
+            <div class="flex flex-col">
+              <p>Total Commission Amount</p>
+              <p>إجمالي الفاتورة</p>
+            </div>
+          </td>
+          <td class="border-2 px-8 py-4"><%= total_invoice_amount %> SAR</td>
+        </tr>
+        <tr>
+          <td class="border-2 px-8 py-4" colspan="2">
+            <div class="flex flex-col">
+              <p>Admin Refunded Amount</p>
+              <p>إجمالي الفاتورة</p>
+            </div>
+          </td>
+          <td class="border-2 px-8 py-4"><%= admin_refunded_amount %> SAR</td>
+        </tr>
+        <tr>
+          <td class="border-2 px-8 py-4" colspan="2">
+            <div class="flex flex-col">
+              <p>Total Credit Sales</p>
+              <p>إجمالي مبيعات الائتمان</p>
+            </div>
+          </td>
+          <td class="border-2 px-8 py-4">
+            <%= (total_success_orders_amount - total_canceled_orders_amount).toFixed(2) %> SAR
+          </td>
+        </tr>
+        <tr>
+          <td class="border-2 px-8 py-4" colspan="2">
+            <div class="flex flex-col">
+              <b>Net Payable Amount (For Admin)</b>
+              <br />
+              <small
+                >Total sales (<%= (total_success_orders_amount - total_canceled_orders_amount).toFixed(2) %>) - Total
+                Commission Amount (<%=total_invoice_amount %>) - Admin Refunded Amount (<%= admin_refunded_amount
+                %>)</small
+              >
+              <p>صافي الفاتورة المستحقة</p>
+            </div>
+          </td>
+          <b>
+            <td class="border-2 px-8 py-4">
+              <%= ((total_success_orders_amount - total_canceled_orders_amount) - Number(total_invoice_amount) -
+              Number(admin_refunded_amount)).toFixed(2) %> SAR
+            </td>
+          </b>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

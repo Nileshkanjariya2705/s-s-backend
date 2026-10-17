@@ -1,0 +1,47 @@
+{
+  "compileOnSave": false,
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
+    "transpileOnly": true
+  },
+  "compilerOptions": {
+    "target": "es2017",
+    "lib": ["DOM", "es2017", "esnext.asynciterable"],
+    "typeRoots": ["node_modules/@types"],
+    "rootDir": "src",
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "6.0",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "pretty": true,
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "dist",
+    "allowJs": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "importHelpers": false,
+    "baseUrl": "src",
+    "paths": {
+      "*": ["customTypes/"],
+      "@/*": ["*"],
+      "@lib/*": ["lib/*"],
+      "@dtos/*": ["dtos/*"],
+      "@utils/*": ["utils/*"],
+      "@routes/*": ["routes/*"],
+      "@config": ["config"],
+      "@services/*": ["services/*"],
+      "@constants/*": ["constants/*"],
+      "@exceptions/*": ["exceptions/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@controllers/*": ["controllers/*"],
+      "@middlewares/*": ["middlewares/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.json", ".env", "src/routes/PurchaseRequest"],
+  "exclude": ["node_modules", "src/http", "src/logs", "src/tests"]
+}
